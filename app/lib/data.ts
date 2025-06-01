@@ -17,11 +17,39 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const data = await sql<Revenue[]>`SELECT * FROM revenue`;
+    // const data = await sql<Revenue[]>`SELECT * FROM revenue`;
+    const data: Array<Revenue> = [{
+      month: 'January',
+      revenue: 10000,
+    }, {
+      month: 'February',
+      revenue: 12000,
+    }, {
+      month: 'March',
+      revenue: 15000,
+    }, {
+      month: 'April',
+      revenue: 13000,
+    }, {
+      month: 'May',
+      revenue: 16000,
+    }, {
+      month: 'June',
+      revenue: 18000,
+    }, {
+      month: 'July',
+      revenue: 20000,
+    }, {
+      month: 'August',
+      revenue: 22000,
+    }, {
+      month: 'September',
+      revenue: 24000,
+    }]
 
-    // console.log('Data fetch completed after 3 seconds.');
+    console.log('Data fetch completed after 3 seconds.');
 
     return data;
   } catch (error) {
@@ -32,12 +60,38 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
-    const data = await sql<LatestInvoiceRaw[]>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
-      LIMIT 5`;
+    // const data = await sql<LatestInvoiceRaw[]>`
+    //   SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
+    //   FROM invoices
+    //   JOIN customers ON invoices.customer_id = customers.id
+    //   ORDER BY invoices.date DESC
+    //   LIMIT 5`;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const data: Array<LatestInvoiceRaw> = [
+      {
+        id: '1',
+        name: 'John Doe',
+        email: 'xxxx@xx.xx',
+        image_url: '/customers/amy-burns.png',
+        amount: 15000,
+      },
+      {
+        id: '2',
+        name: 'Jane Smith',
+        email: 'xxxx@xx.xx',
+        image_url: '/customers/balazs-orban.png',
+        amount: 20000,
+      },
+      {
+        id: '3',
+        name: 'Alice Johnson',
+        email: 'xxxx@xx.xx',
+        image_url: '/customers/delba-de-oliveira.png',
+        amount: 30000,
+      }
+    ]
 
     const latestInvoices = data.map((invoice) => ({
       ...invoice,
