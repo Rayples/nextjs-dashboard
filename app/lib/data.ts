@@ -147,26 +147,49 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable[]>`
-      SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      WHERE
-        customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
-      ORDER BY invoices.date DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
+    // const invoices = await sql<InvoicesTable[]>`
+    //   SELECT
+    //     invoices.id,
+    //     invoices.amount,
+    //     invoices.date,
+    //     invoices.status,
+    //     customers.name,
+    //     customers.email,
+    //     customers.image_url
+    //   FROM invoices
+    //   JOIN customers ON invoices.customer_id = customers.id
+    //   WHERE
+    //     customers.name ILIKE ${`%${query}%`} OR
+    //     customers.email ILIKE ${`%${query}%`} OR
+    //     invoices.amount::text ILIKE ${`%${query}%`} OR
+    //     invoices.date::text ILIKE ${`%${query}%`} OR
+    //     invoices.status ILIKE ${`%${query}%`}
+    //   ORDER BY invoices.date DESC
+    //   LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    // `;
+
+    const invoices: Array<InvoicesTable> = [
+      {
+        id: '1',
+        customer_id: '1',
+        name: 'John Doe',
+        email: '',
+        image_url: '/customers/amy-burns.png',
+        date: '2023-10-01',
+        amount: 15000,
+        status: 'paid',
+      },
+      {
+        id: '2',
+        customer_id: '2',
+        name: 'Jane Smith',
+        email: '',
+        image_url: '/customers/balazs-orban.png',
+        date: '2023-10-02',
+        amount: 20000,
+        status: 'pending',
+      }
+    ];
 
     return invoices;
   } catch (error) {
@@ -177,16 +200,20 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    const data = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
-    WHERE
-      customers.name ILIKE ${`%${query}%`} OR
-      customers.email ILIKE ${`%${query}%`} OR
-      invoices.amount::text ILIKE ${`%${query}%`} OR
-      invoices.date::text ILIKE ${`%${query}%`} OR
-      invoices.status ILIKE ${`%${query}%`}
-  `;
+  //   const data = await sql`SELECT COUNT(*)
+  //   FROM invoices
+  //   JOIN customers ON invoices.customer_id = customers.id
+  //   WHERE
+  //     customers.name ILIKE ${`%${query}%`} OR
+  //     customers.email ILIKE ${`%${query}%`} OR
+  //     invoices.amount::text ILIKE ${`%${query}%`} OR
+  //     invoices.date::text ILIKE ${`%${query}%`} OR
+  //     invoices.status ILIKE ${`%${query}%`}
+  // `;
+
+    const data: Array<{ count: string }> = [
+      { count: '12' } // Simulated count for demo purposes
+    ];
 
     const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
     return totalPages;
